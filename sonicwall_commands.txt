@@ -1,9 +1,6 @@
 address-object ipv4 "<Target Internal Host>" host <Target IP> zone LAN
 commit
 end
-commit
-end
-exit
 
 address-object ipv4 "<IP Host 1>" host <IP Host IP> zone WAN
 commit
@@ -44,7 +41,3 @@ flow-reporting
 packet-monitoring
 commit
 end
-
-commit
-end
-exit
