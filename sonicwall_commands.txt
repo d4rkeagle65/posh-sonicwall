@@ -1,0 +1,50 @@
+address-object ipv4 "<Target Internal Host>" host <Target IP> zone LAN
+commit
+end
+commit
+end
+exit
+
+address-object ipv4 "<IP Host 1>" host <IP Host IP> zone WAN
+commit
+address-object ipv4 "<IP Host 2>" host <IP Host IP> zone WAN
+commit
+address-group ipv4 "<IP Group Name>"
+address-object ipv4 "<IP Host 1>"
+address-object ipv4 "<IP Host 2>"
+commit
+end
+
+service-object "<Service Name 1>" TCP <Service Port Range Start> <Service Port Range End>
+commit
+service-object "<Service Name 2>" TCP <Service Port Range Start> <Service Port Range End>
+commit
+service-group "<Service Group Name>"
+service-object "<Service Name 1>"
+service-object "<Service Name 2>"
+commit
+end
+
+nat-policy inbound X1 outbound any source any translated-source group "<IP Group Name>" destination name "Default Active WAN IP" translated-destination name "<Target Internal Host>" service group "<Service Group Name>" translated-service original
+commit
+end
+
+access-rule from WAN to LAN action allow
+comment "<Comment>"
+source address group "<IP Group Name>"
+source port any
+service group "<Service Group Name>"
+destination address any
+priority auto
+users included all
+users excluded none
+schedule always-on
+logging
+flow-reporting
+packet-monitoring
+commit
+end
+
+commit
+end
+exit
